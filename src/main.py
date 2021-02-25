@@ -4,6 +4,8 @@ car_path = {}
 
 simulacion = {}
 
+mapa = {}
+
 def read_file(file_path):
     with open(file_path, 'r') as read_file:
         plan = read_file.readline().strip().split(' ')
@@ -29,7 +31,32 @@ def read_file(file_path):
                 'streets': path[1:]
             }
 
-def la_logica():
+
+'''
+    key: nodo del que sale
+    value: tupla
+        (nombre_calle, nodo_final, duración)
+
+    Ej.: {2: [('rue-de-londres', 0, 1), ('rue-de-rome', 3, 2)], 0: [('rue-d-amsterdam', 1, 1)], 3: [('rue-d-athenes', 1, 1)], 1: [('rue-de-moscou', 2, 3)]}
+'''
+def hacer_mapa():
+    for street in streets.items():
+        if street[1]['B'] not in mapa:
+            mapa[street[1]['B']] = [(street[0], street[1]['E'], street[1]['L'])]
+        else:
+            mapa[street[1]['B']].append((street[0], street[1]['E'], street[1]['L']))
+
+'''
+    key: id
+    value: pos
+'''
+coches = {}
+def posicionar_coches():
+    for path in car_path.items():
+        coches[path[0]] = streets[path[1]['streets'][0]]['E']
+
+
+def realizar_simulación():
     pass
 
 '''
@@ -66,7 +93,9 @@ def write_file():
 
     
 if __name__ == "__main__":
-    data_file = 'b.txt'
+    data_file = 'a.txt'
     read_file(r'C:\Users\Mario\Documents\GitHub\Hash-Code-2021\data\\' + data_file)
-    la_logica()
-    write_file()
+    hacer_mapa()
+    posicionar_coches()
+    realizar_simulación()
+    #write_file()
