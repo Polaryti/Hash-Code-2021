@@ -2,7 +2,9 @@ city_plan = {}
 streets = {}
 car_path = {}
 
-#simulacion = {}
+simulacion = { 
+    'intersections': []
+}
 
 mapa = {}
 
@@ -57,68 +59,44 @@ def posicionar_coches():
         coches[path[0]] = streets[path[1]['streets'][0]]['E']
     
 
-traffic_ligths = []
 def realizar_simulación():
-    # calles = set()
-    # for path in car_path.values():
-    #     for st in path['streets']:
-    #         calles.add(st)
-    
-
-    
-    # Por que intersecciones pasa el coche
     intersections = set()
 
-    # algo = car_path.values()
-    # print(algo.
-    # for i in range(len(algo)):
-    #     print(algo[i])
-
     for street in car_path.values():
+        street['streets'].pop()
         for i in street['streets']:
             for v in mapa.values():
                 for k in v:
-                    print(k)
                     if i == k[0]:
-                        
-                        #print(k[1])
                         intersections.add(k[1])
-        
-        #print(len(intersections))
-        
 
-    # inicios = set()
-    # pasos = set()
-    # for coche in coches.values():
-    #     inicios.add(coche)
-    
-    # print(car_path)
-    # for path in car_path.values():
-    #     pasos.add(path['P'])
-    # # print(len(coches.values()))
-    # # print(len(aux))
+    incidencia = {}
+    incidencia2 = {}
+    for street in streets.items():
+        if street[1]['E'] not in incidencia:
+            incidencia2[street[1]['E']] = [street[0]]
+            incidencia[street[1]['E']] = 1
+        else:
+            incidencia2[street[1]['E']].append(street[0])
+            incidencia[street[1]['E']] += 1
 
 
-simulacion = {
-    'n_traffic_lights': 3,
-    'intersections': [
-        {
-            'id': 1,
-            'n_streets': 2,
-            'strets': [('rue-d-athenes', 1), ('rue-d-amsterdam', 2)]
-        },
-        {
-            'id': 0,
-            'n_streets': 1,
-            'strets': [('rue-de-londres', 2)]
-        },
-        {
-            'id': 2,
-            'n_streets': 1,
-            'strets': [('rue-de-moscou', 1)]
-        }
-    ]
-}
+    cont = 0
+    for nodo in incidencia.items():
+        cont += 1
+        if cont <= int(len(intersections)):
+            simulacion['n_traffic_lights'] = int(len(intersections))
+            aux = {}
+            aux['id'] = int(nodo[0])
+            aux['n_streets'] = int(nodo[1])
+            lista_aux = []
+            for i in range(nodo[1]):
+                nombre = incidencia2[int(nodo[0])][i]
+                valor_aux = (nombre, 1)
+                lista_aux.append(valor_aux)
+            aux['strets'] = lista_aux
+            simulacion['intersections'].append(aux)
+
 
 
 def write_file():
@@ -133,7 +111,7 @@ def write_file():
 
     
 if __name__ == "__main__":
-    data_file = 'a.txt'
+    data_file = 'e.txt'
     read_file(r'C:\Users\Mario\Documents\GitHub\Hash-Code-2021\data\\' + data_file)
     hacer_mapa()
     posicionar_coches()
