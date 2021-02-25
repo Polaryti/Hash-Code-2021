@@ -2,7 +2,7 @@ city_plan = {}
 streets = {}
 car_path = {}
 
-simulacion = {}
+#simulacion = {}
 
 mapa = {}
 
@@ -46,6 +46,7 @@ def hacer_mapa():
         else:
             mapa[street[1]['B']].append((street[0], street[1]['E'], street[1]['L']))
 
+
 '''
     key: id
     value: pos
@@ -54,19 +55,57 @@ coches = {}
 def posicionar_coches():
     for path in car_path.items():
         coches[path[0]] = streets[path[1]['streets'][0]]['E']
+    
 
-
+traffic_ligths = []
 def realizar_simulación():
-    pass
+    # calles = set()
+    # for path in car_path.values():
+    #     for st in path['streets']:
+    #         calles.add(st)
+    
 
-'''
+    
+    # Por que intersecciones pasa el coche
+    intersections = set()
+
+    # algo = car_path.values()
+    # print(algo.
+    # for i in range(len(algo)):
+    #     print(algo[i])
+
+    for street in car_path.values():
+        for i in street['streets']:
+            for v in mapa.values():
+                for k in v:
+                    print(k)
+                    if i == k[0]:
+                        
+                        #print(k[1])
+                        intersections.add(k[1])
+        
+        #print(len(intersections))
+        
+
+    # inicios = set()
+    # pasos = set()
+    # for coche in coches.values():
+    #     inicios.add(coche)
+    
+    # print(car_path)
+    # for path in car_path.values():
+    #     pasos.add(path['P'])
+    # # print(len(coches.values()))
+    # # print(len(aux))
+
+
 simulacion = {
     'n_traffic_lights': 3,
     'intersections': [
         {
             'id': 1,
             'n_streets': 2,
-            'strets': [('rue-d-athenes', 2), ('rue-d-amsterdam', 1)]
+            'strets': [('rue-d-athenes', 1), ('rue-d-amsterdam', 2)]
         },
         {
             'id': 0,
@@ -80,7 +119,7 @@ simulacion = {
         }
     ]
 }
-'''
+
 
 def write_file():
     with open('res.txt', 'w') as write_file:
@@ -91,6 +130,7 @@ def write_file():
             for street in intersection['strets']:
                 write_file.write(str(street[0]) + ' ' + str(street[1]) + '\n')
 
+
     
 if __name__ == "__main__":
     data_file = 'a.txt'
@@ -98,4 +138,4 @@ if __name__ == "__main__":
     hacer_mapa()
     posicionar_coches()
     realizar_simulación()
-    #write_file()
+    write_file()
